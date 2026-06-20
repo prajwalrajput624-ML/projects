@@ -1,6 +1,6 @@
 # Data Science Projects 📊
 
-A collection of end-to-end Machine Learning projects covering classification and prediction problems across different domains — from finance to agriculture.
+A collection of end-to-end Data Science projects covering classification and prediction problems across different domains — from finance to agriculture.
 
 ## 📁 Projects
 
