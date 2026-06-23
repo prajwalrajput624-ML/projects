@@ -1,4 +1,4 @@
-# 📊 Advanced Data Science & Deep Learning Portfolio
+# 📊 Data Science & Machine Learning Projects
 
 This notebook covers end-to-end machine learning and deep learning pipelines. Below is the comprehensive breakdown of each project, including its core objectives, specific algorithmic approaches, and strategic business applications.
 
