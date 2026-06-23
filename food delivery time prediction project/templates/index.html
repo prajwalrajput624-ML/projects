@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delivery Predictor</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/jpg" href="/static/istockphoto-1289190483-1024x1024.jpg">
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Food Delivery Time Predictor</h1>
+
+        <form action="/predict" method="post">
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Distance (km):</label>
+                    <input type="number" name="distance_km" step="0.1" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Route Length (km):</label>
+                    <input type="number" name="route_length_km" step="0.1" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Order Day (1-7):</label>
+                    <input type="number" name="order_day" min="1" max="7" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Traffic Level:</label>
+                    <select name="traffic_level" required>
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Delivery Mode:</label>
+                    <select name="delivery_mode" required>
+                        <option value="1">Bike</option>
+                        <option value="2">Car</option>
+                        <option value="3">Scooter</option>
+                        <option value="4">Bicycle</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Weather:</label>
+                    <select name="weather_conditions" required>
+                        <option value="1">Clear</option>
+                        <option value="2">Cloudy</option>
+                        <option value="3">Rainy</option>
+                        <option value="4">Windy</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Restaurant Zone:</label>
+                    <select name="restaurant_zone" required>
+                        <option value="1">South</option>
+                        <option value="2">North</option>
+                        <option value="3">East</option>
+                        <option value="4">West</option>
+                        <option value="5">Central</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Customer Zone:</label>
+                    <select name="customer_zone" required>
+                        <option value="1">South</option>
+                        <option value="2">North</option>
+                        <option value="3">East</option>
+                        <option value="4">West</option>
+                        <option value="5">Central</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">Predict Delivery Time</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="result">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

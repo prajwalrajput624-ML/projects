@@ -1,0 +1,136 @@
+/* Google Fonts se ek classical Serif font load kar rahe hain */
+@import url('https://googleapis.com');
+
+body {
+    font-family: 'Lora', serif;
+    /* Classical reading font */
+    background-color: #f5f2ed;
+    /* Light cream/parchment color */
+    background-image: radial-gradient(#dcd7cf 0.5px, transparent 0.5px);
+    background-size: 20px 20px;
+    /* Subtle vintage pattern */
+    display: flex;
+    justify-content: center;
+    padding: 50px 20px;
+    margin: 0;
+}
+
+.container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 4px;
+    /* Sharp corners are more classical than rounded */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid #d1c7b7;
+    max-width: 700px;
+    width: 100%;
+    position: relative;
+}
+
+/* Classical double-border effect */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid #e0d8cc;
+    pointer-events: none;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    color: #4a443c;
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #4a443c;
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 15px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #5d5449;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+input,
+select {
+    padding: 12px;
+    border: 1px solid #ccc5b9;
+    background-color: #fffcf7;
+    border-radius: 0;
+    /* Traditional flat design */
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    transition: all 0.3s;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #4a443c;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(74, 68, 60, 0.1);
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #4a443c;
+    /* Elegant dark charcoal/brown */
+    color: #f5f2ed;
+    border: none;
+    border-radius: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 40px;
+    transition: background 0.4s ease;
+}
+
+button:hover {
+    background-color: #2e2a25;
+    letter-spacing: 3px;
+    /* Subtle animation */
+}
+
+.result {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fbf9f6;
+    border: 1px double #4a443c;
+    /* Double border for royal feel */
+    color: #4a443c;
+    font-size: 1.2rem;
+    font-style: italic;
+    text-align: center;
+}
+
+/* Responsive fix */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
