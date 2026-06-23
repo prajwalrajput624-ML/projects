@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Student Performance AI-Predictor</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Student Performance AI-Predictor</h1>
+
+        <form action="/predict" method="POST">
+
+            <!-- CATEGORICAL FEATURES -->
+            <div class="form-group">
+                <label for="Parental_Involvement">Parental Involvement</label>
+                <select name="Parental_Involvement" id="Parental_Involvement" required>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Access_to_Resources">Access to Resources</label>
+                <select name="Access_to_Resources" id="Access_to_Resources" required>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Extracurricular_Activities">Extracurricular Activities</label>
+                <select name="Extracurricular_Activities" id="Extracurricular_Activities" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Motivation_Level">Motivation Level</label>
+                <select name="Motivation_Level" id="Motivation_Level" required>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Internet_Access">Internet Access</label>
+                <select name="Internet_Access" id="Internet_Access" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Family_Income">Family Income</label>
+                <select name="Family_Income" id="Family_Income" required>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Teacher_Quality">Teacher Quality</label>
+                <select name="Teacher_Quality" id="Teacher_Quality" required>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="School_Type">School Type</label>
+                <select name="School_Type" id="School_Type" required>
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Peer_Influence">Peer Influence</label>
+                <select name="Peer_Influence" id="Peer_Influence" required>
+                    <option value="Positive">Positive</option>
+                    <option value="Neutral">Neutral</option>
+                    <option value="Negative">Negative</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Learning_Disabilities">Learning Disabilities</label>
+                <select name="Learning_Disabilities" id="Learning_Disabilities" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Parental_Education_Level">Parental Education Level</label>
+                <select name="Parental_Education_Level" id="Parental_Education_Level" required>
+                    <option value="High School">High School</option>
+                    <option value="College">College</option>
+                    <option value="Postgraduate">Postgraduate</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Distance_from_Home">Distance from Home</label>
+                <select name="Distance_from_Home" id="Distance_from_Home" required>
+                    <option value="Near">Near</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Far">Far</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Gender">Gender</label>
+                <select name="Gender" id="Gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <hr style="grid-column: span 2; margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+
+            <!-- NUMERIC FEATURES -->
+            <div class="form-group">
+                <label for="Hours_Studied">Hours Studied (Weekly)</label>
+                <input type="number" name="Hours_Studied" id="Hours_Studied" min="0" max="168" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Attendance">Attendance (%)</label>
+                <input type="number" name="Attendance" id="Attendance" min="0" max="100" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Sleep_Hours">Sleep Hours (Daily)</label>
+                <input type="number" name="Sleep_Hours" id="Sleep_Hours" min="0" max="24" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Previous_Scores">Previous Scores (0-100)</label>
+                <input type="number" name="Previous_Scores" id="Previous_Scores" min="0" max="100" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Tutoring_Sessions">Tutoring Sessions (Monthly)</label>
+                <input type="number" name="Tutoring_Sessions" id="Tutoring_Sessions" min="0" max="50" step="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="Physical_Activity">Physical Activity (Days/Week)</label>
+                <input type="number" name="Physical_Activity" id="Physical_Activity" min="0" max="7" step="1" required>
+            </div>
+
+            <div class="button-container">
+                <button type="submit">Predict Performance</button>
+            </div>
+        </form>
+
+    </div>
+
+</body>
+
+</html>

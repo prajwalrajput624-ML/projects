@@ -1,0 +1,181 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: linear-gradient(160deg, #DA4453, #89216B);
+}
+
+/* Glass Container */
+
+.container {
+    max-width: 850px;
+    width: 100%;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    animation: fadeIn 0.8s ease;
+}
+
+/* Title */
+
+h1 {
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+/* Grid Layout */
+
+form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 25px;
+}
+
+.full-width,
+.button-container {
+    grid-column: span 2;
+}
+
+/* Form Group */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+
+label {
+    font-size: 0.85rem;
+    color: #e2e8f0;
+    margin-bottom: 6px;
+}
+
+/* Inputs */
+
+input,
+select {
+    padding: 12px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+/* Placeholder */
+
+input::placeholder {
+    color: #6b7280;
+}
+
+/* Hover Effect */
+
+input:hover,
+select:hover {
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Focus Effect */
+
+input:focus,
+select:focus {
+    outline: none;
+    transform: scale(1.02);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+/* Button */
+
+button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #8A2387, #E94057, #F27121);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Button Hover */
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Button Click */
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* Result Box */
+
+.result {
+    grid-column: span 2;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Animation */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Responsive */
+
+@media (max-width:600px) {
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width,
+    .button-container,
+    .result {
+        grid-column: span 1;
+    }
+
+    .container {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+}

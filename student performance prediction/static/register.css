@@ -1,0 +1,137 @@
+/* --- 1. Reset & Base Styles --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    /* Red-Purple Gradient to match your theme */
+    background: linear-gradient(135deg, #DA4453 0%, #89216B 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    /* Mobile safety */
+    color: #2d3748;
+}
+
+/* --- 2. Form Card Container --- */
+.form-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    /* Soft Elevation Shadow */
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+/* Title Styling */
+h2 {
+    margin-bottom: 24px;
+    font-size: 1.75rem;
+    font-weight: 800;
+    text-align: center;
+    color: #1a202c;
+    letter-spacing: -0.025em;
+}
+
+/* --- 3. Form Input Groups --- */
+.form-group {
+    margin-bottom: 18px;
+    /* Balanced spacing for multi-field forms */
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 1rem;
+    /* iOS zoom issue prevention */
+    color: #2d3748;
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+}
+
+/* Input States */
+input:focus {
+    background-color: #ffffff;
+    border-color: #667eea;
+    /* Purple-blue focus border */
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
+}
+
+input::placeholder {
+    color: #a0aec0;
+}
+
+/* --- 4. Submit Button --- */
+button {
+    width: 100%;
+    padding: 14px;
+    background: #4a5568;
+    /* Solid charcoal button */
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #2d3748;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+    filter: brightness(0.9);
+}
+
+/* --- 5. Footer Text & Link --- */
+p {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* --- 6. Mobile Responsiveness --- */
+@media (max-width: 480px) {
+    .form-card {
+        padding: 30px 20px;
+        border-radius: 12px;
+    }
+}

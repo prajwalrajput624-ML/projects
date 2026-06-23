@@ -1,0 +1,116 @@
+/* --- 1. Reset aur Basic Styles --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    /* Aapka original red-purple gradient */
+    background: linear-gradient(135deg, #DA4453 0%, #89216B 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: #2d3748;
+}
+
+/* --- 2. Form Container (Card) --- */
+/* Aapke HTML mein jo div hai, usse ye card look dega */
+div:has(form) {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+/* --- 3. Form Layout --- */
+form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 1rem;
+    /* iOS zoom fix */
+    color: #2d3748;
+    background-color: #f8fafc;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+/* Jab user input box par click kare */
+input:focus {
+    background-color: #ffffff;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+    transform: translateY(-1px);
+}
+
+/* --- 4. Login Button --- */
+button {
+    width: 100%;
+    padding: 14px;
+    background: #4a5568;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #2d3748;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* --- 5. Register Link Styling --- */
+p {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #718096;
+}
+
+a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #764ba2;
+}
+
+/* --- 6. Mobile Responsiveness --- */
+@media (max-width: 480px) {
+    div:has(form) {
+        padding: 20px 20px;
+    }
+}
