@@ -55,7 +55,7 @@ uploaded_file = st.file_uploader('Choose an Image...', type=['jpg', 'jpeg', 'png
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.image(image, caption='Uploaded Image', width=350)
+    st.image(image, caption='Uploaded Image', width=250)
 
     if st.button('Predict', type='primary'):
         if interpreter is not None:
