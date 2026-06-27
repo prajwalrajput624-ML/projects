@@ -18,15 +18,15 @@ st.set_page_config(
 # ─────────────────────────────────────────────
 # MODEL LOADING 
 # ─────────────────────────────────────────────
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 @st.cache_resource()
 def load_my_model():
     try:
-        return joblib.load('final_loan_model_GB.pkl')
+        return joblib.load(os.path.join(BASE_DIR, 'final_loan_model_GB.pkl'))
     except Exception as e:
-        st.error(f"❌ Model Load Error: {e}")
+        st.error(f"Model Path Error: {e}")
         return None
-
+    
 model = load_my_model()
 
 # ─────────────────────────────────────────────
