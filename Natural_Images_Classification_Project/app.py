@@ -23,11 +23,11 @@ CLASS_NAMES = [
     'motorbike',    
     'person'        
 ]
-
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'natural_images.tflite')
 @st.cache_resource()
 def load_model():
     try:
-        interpreter = tf.lite.Interpreter(model_path='natural_images.tflite')
+        interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
         interpreter.allocate_tensors()
         return interpreter
     except Exception as e:
