@@ -65,7 +65,7 @@ This notebook covers end-to-end machine learning and deep learning pipelines. Be
 *   **Type**: Data Analytics & Relational Database Management (Using **PostgreSQL** / **MySQL** with Complex Joins & Window Functions)
 *   **Business Use Case**: Provides automated operational reporting dashboards and financial tracking summaries directly to corporate stakeholders.
 *   **Business Value**: Facilitates data-driven executive decision-making, uncovers hidden bottleneck costs in internal processes, and maintains an optimized source of truth.
-*   
+    
 ---
 
 ## 🧰 Technologies & Toolkit
