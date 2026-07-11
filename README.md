@@ -42,6 +42,30 @@ This notebook covers end-to-end machine learning and deep learning pipelines. Be
 *   **Business Use Case**: Flags underperforming or struggling students early in an academic semester to prompt institutional support.
 *   **Business Value**: Decreases student dropout rates, improves overall academic performance scores, and optimizes resource distribution.
 
+### 7. Cat & Dog Image Classifier
+*   **Objective**: Classify input digital images accurately as either a cat or a dog.
+*   **Type**: Binary Image Classification (Using **Custom Convolutional Neural Networks (CNN)** / **MobileNetV2 Transfer Learning**)
+*   **Business Use Case**: Automates image tagging and visual content filtering for pet-centric e-commerce platforms and social networks.
+*   **Business Value**: Enhances automated content moderation workflows, builds intelligent search catalogs, and powers personalized pet product recommendations.
+
+### 8. House Price Prediction
+*   **Objective**: Estimate market valuation of residential properties using structural attributes, geographical location, and historical sales trends.
+*   **Type**: Regression (Using **XGBoost Regressor** / **Random Forest Regressor**)
+*   **Business Use Case**: Powers automated valuation engines (AVMs) for real estate platforms and digital property marketplaces.
+*   **Business Value**: Enables real estate investors to identify undervalued assets instantly, speeds up mortgage appraisal timelines, and guides realistic listing prices.
+
+### 9. Natural Images Dataset Classifier
+*   **Objective**: Recognize and categorize diverse objects spanning multiple distinct classes (e.g., airplane, car, cat, dog, flower, fruit, motorbike, person) within real-world scenes.
+*   **Type**: Multi-class Image Classification (Using **TensorFlow & Keras with ResNet50 Transfer Learning**)
+*   **Business Use Case**: Drives visual search features and automatic assets organization engines in large digital asset management (DAM) platforms.
+*   **Business Value**: Cuts down manual metadata cataloging costs by up to 90%, boosts search discoverability for users, and unlocks deep unstructured visual insights.
+
+### 10. SQL Analysis & Querying Project
+*   **Objective**: Design structural relational database models and execute advanced queries to discover hidden operational patterns and business intelligence insights.
+*   **Type**: Data Analytics & Relational Database Management (Using **PostgreSQL** / **MySQL** with Complex Joins & Window Functions)
+*   **Business Use Case**: Provides automated operational reporting dashboards and financial tracking summaries directly to corporate stakeholders.
+*   **Business Value**: Facilitates data-driven executive decision-making, uncovers hidden bottleneck costs in internal processes, and maintains an optimized source of truth.
+*   
 ---
 
 ## 🧰 Technologies & Toolkit
