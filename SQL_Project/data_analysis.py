@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # =====================================================================
-# 2. CUSTOM THEME & STYLING (Light & Dark Mode Compatible)
+# 2. CUSTOM THEME & CSS (Light & Dark Mode Adaptive)
 # =====================================================================
 PRIMARY_COLOR = "#2E5EAA"
 ACCENT_COLOR = "#F2994A"
@@ -26,7 +26,7 @@ st.markdown(f"""
     .block-container {{ padding-top: 1.5rem; padding-bottom: 2rem; max-width: 1350px; }}
     #MainMenu, footer {{ visibility: hidden; }}
 
-    /* Metric Cards - Adapts to Streamlit's Dark/Light Theme */
+    /* Metric Cards - Adapts to Streamlit's Theme */
     div[data-testid="stMetric"] {{
         background-color: var(--secondary-background-color);
         border: 1px solid var(--divider-color);
@@ -42,10 +42,10 @@ st.markdown(f"""
     div[data-testid="stMetricLabel"] {{ font-weight: 600; font-size: 0.9rem; letter-spacing: 0.5px; }}
     div[data-testid="stMetricValue"] {{ font-weight: 700; color: {PRIMARY_COLOR}; }}
 
-    /* Headers */
+    /* Headers Styling */
     h1, h2, h3 {{ font-weight: 700 !important; }}
 
-    /* Insight Box */
+    /* Actionable Insight Box */
     .insight-box {{
         background-color: var(--secondary-background-color);
         border-left: 5px solid {PRIMARY_COLOR};
@@ -56,7 +56,7 @@ st.markdown(f"""
         margin: 20px 0;
     }}
     
-    /* Footer Style */
+    /* Elegant Footer */
     .custom-footer {{
         text-align: center;
         padding: 20px 0;
@@ -85,11 +85,10 @@ def apply_plotly_theme(fig, title=None, y_title=None, x_title=None, show_legend=
 
 
 # =====================================================================
-# 3. DATA PIPELINE (Production-Ready: Fallback + File Upload)
+# 3. HIGH-PERFORMANCE DATA LOADER (Cached)
 # =====================================================================
 @st.cache_data
-def get_fallback_data():
-    """Returns default mock dataset if no file is uploaded."""
+def load_superstore_data():
     yearly_sales = pd.DataFrame({
         "year": [2015, 2016, 2017, 2018],
         "total_quantity": [1952, 2055, 2534, 3258],
@@ -108,7 +107,7 @@ def get_fallback_data():
                          92686.38,135061.19,138056.43,234388.80,
                          122260.86,127558.58,193815.83,278416.69],
     })
-    quarterly_sales["year"] = quarterly_sales["quarter"].str[:4]
+    quarterly_sales["year"] = quarterly_sales["quarter"].str[:4].astype(int)
 
     month_order = ["january","february","march","april","may","june",
                    "july","august","september","october","november","december"]
@@ -190,20 +189,10 @@ def get_fallback_data():
         "day_order": day_order,
     }
 
-# Load Data
-data = get_fallback_data()
+# Load App Data
+data = load_superstore_data()
 
-# File Uploader in Sidebar
-uploaded_file = st.sidebar.file_uploader("Upload custom CSV (Optional)", type=["csv"])
-if uploaded_file is not None:
-    try:
-        # Example processing of uploaded raw data can go here
-        # For now we display warning or process dynamically.
-        st.sidebar.success("File uploaded successfully!")
-    except Exception as e:
-        st.sidebar.error(f"Error parsing file: {e}")
-
-# Global Static KPIs
+# Constant Metadata Variables
 DATASET_SIZE = "5,136 KB"
 MEAN_MEDIAN_DIFF = 176.28
 MOST_FREQUENT_CATEGORY = "Office Supplies"
@@ -213,34 +202,45 @@ SHIP_DATE_RANGE = "Jan 7, 2015 → Jan 5, 2019"
 
 
 # =====================================================================
-# 4. SIDEBAR NAVIGATION
+# 4. SIDEBAR NAVIGATION & FILTERS
 # =====================================================================
 with st.sidebar:
-    st.markdown("### 🛒 Superstore Sales")
-    st.caption("SQL-driven analytics dashboard")
+    st.markdown("### 🛒 Navigation Panel")
+    st.caption("Operational Sales Intelligence")
     st.markdown("---")
 
     page = st.radio(
-        "Navigate Dashboard",
+        "Select Dashboard Section",
         ["📌 Overview", "🗂️ Category Analysis", "📅 Time Trends",
          "🏆 Top Products", "📆 Weekday vs Weekend"],
     )
 
     st.markdown("---")
-    st.markdown("**Dataset Coverage**")
+    st.markdown("**Global Timeline Filter**")
+    
+    # Multiselect Filter for Years
+    available_years = sorted(list(data["yearly"]["year"].unique()))
+    selected_years = st.multiselect(
+        "Filter Data by Year",
+        options=available_years,
+        default=available_years,
+    )
+
+    st.markdown("---")
+    st.markdown("**Core Dataset Metadata**")
     st.caption(f"📅 Orders: {ORDER_DATE_RANGE}")
     st.caption(f"🚚 Shipping: {SHIP_DATE_RANGE}")
-    st.caption(f"💾 Size: {DATASET_SIZE}")
+    st.caption(f"💾 Footprint: {DATASET_SIZE}")
 
 
 # =====================================================================
-# 5. EXPORT / DOWNLOAD HELPER
+# 5. DATASET EXPORTER UTILITY
 # =====================================================================
-def get_csv_download_btn(df, filename="data.csv"):
+def create_download_button(df, filename="sales_data_export.csv"):
     csv_buffer = io.StringIO()
     df.to_csv(csv_buffer, index=False)
     return st.download_button(
-        label="📥 Download Data (CSV)",
+        label="📥 Export Table as CSV",
         data=csv_buffer.getvalue(),
         file_name=filename,
         mime="text/csv",
@@ -248,12 +248,12 @@ def get_csv_download_btn(df, filename="data.csv"):
 
 
 # =====================================================================
-# HEADER SECTION
+# HEADER
 # =====================================================================
 st.title("Superstore Sales Intelligence")
 st.markdown(
     f'<p style="color: gray; font-size: 0.95rem; margin-top: -15px;">'
-    f'Interactive analytical platform • Cleaned, deduplicated, and ranked using PostgreSQL window functions.'
+    f'Interactive performance dashboard built on cleaned transaction pipelines.'
     f'</p>',
     unsafe_allow_html=True,
 )
@@ -264,26 +264,29 @@ st.markdown("---")
 # PAGE: OVERVIEW
 # =====================================================================
 if page == "📌 Overview":
-    total_sales = data["yearly"]["total_sales"].sum()
-    total_orders = data["yearly"]["total_quantity"].sum()
+    # Filter Yearly Data
+    filtered_yearly = data["yearly"][data["yearly"]["year"].isin(selected_years)] if selected_years else data["yearly"]
+    
+    total_sales = filtered_yearly["total_sales"].sum()
+    total_orders = filtered_yearly["total_quantity"].sum()
     latest_growth = data["yearly"]["yoy_growth_%"].iloc[-1]
 
-    # Metrics Row
+    # Metrics Layout
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Total Sales (4Y)", f"${total_sales:,.0f}")
-    c2.metric("Total Orders", f"{total_orders:,}")
-    c3.metric("Latest YoY Growth", f"{latest_growth:+.1f}%", delta=f"{latest_growth:.1f}%")
-    c4.metric("Top Category", MOST_FREQUENT_CATEGORY)
+    c1.metric("Selected Period Sales", f"${total_sales:,.0f}")
+    c2.metric("Total Order Quantity", f"{total_orders:,}")
+    c3.metric("Terminal YoY Growth (2018)", f"{latest_growth:+.1f}%", delta=f"{latest_growth:.1f}%")
+    c4.metric("Dominant Category", MOST_FREQUENT_CATEGORY)
 
-    st.markdown("### Executive Highlights")
+    st.markdown("### Executive Performance Dashboard")
     col_left, col_right = st.columns([1.4, 1])
 
     with col_left:
-        fig = px.bar(data["yearly"], x="year", y="total_sales",
-                     text=data["yearly"]["total_sales"].apply(lambda v: f"${v:,.0f}"),
+        fig = px.bar(filtered_yearly, x="year", y="total_sales",
+                     text=filtered_yearly["total_sales"].apply(lambda v: f"${v:,.0f}"),
                      color_discrete_sequence=[PRIMARY_COLOR])
         fig.update_traces(textposition="outside", marker_line_width=0)
-        apply_plotly_theme(fig, title="Annual Revenue Expansion", y_title="Sales ($)", x_title="")
+        apply_plotly_theme(fig, title="Annual Sales Trajectory ($)", y_title="Sales ($)", x_title="")
         fig.update_xaxes(type="category")
         st.plotly_chart(fig, use_container_width=True)
 
@@ -291,21 +294,21 @@ if page == "📌 Overview":
         fig = px.pie(data["category"], names="category", values="percentage_share",
                      hole=0.55, color="category", color_discrete_sequence=PALETTE)
         fig.update_traces(textinfo="label+percent", textposition="outside")
-        apply_plotly_theme(fig, title="Portfolio Revenue Share")
+        apply_plotly_theme(fig, title="Product Category Revenue Mix")
         st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("Cumulative Growth Track (Monthly)")
+    st.subheader("Aggregate Growth Pipeline")
     fig = px.area(data["monthly"], x="month_label", y="running_total",
                   color_discrete_sequence=[ACCENT_COLOR])
     fig.update_traces(line=dict(width=2.5, color=ACCENT_COLOR), fillcolor="rgba(242,153,74,0.12)")
-    apply_plotly_theme(fig, title="Running Sum of Monthly Sales", y_title="Cumulative Revenue ($)", x_title="")
+    apply_plotly_theme(fig, title="Running Cumulative Sales Track", y_title="Cumulative Sales ($)", x_title="")
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown(
-        f'<div class="insight-box">🏆 <b>Best Selling Product:</b> '
+        f'<div class="insight-box">🏆 <b>Top Velocity SKU:</b> '
         f'{MOST_FREQUENT_PRODUCT} &nbsp;|&nbsp; '
-        f'📊 <b>Statistical Skew Alert:</b> Mean vs. Median gap is ${MEAN_MEDIAN_DIFF}. '
-        f'This indicates a high-value transaction skew (small percentage of bulk orders are driving massive revenue spikes).</div>',
+        f'📊 <b>Statistical Deviation Warning:</b> The gap between mean and median order sizes is ${MEAN_MEDIAN_DIFF}. '
+        f'This indicates a high density of wholesale bulk-orders driving overall revenue spikes rather than baseline retail volume.</div>',
         unsafe_allow_html=True,
     )
 
@@ -314,7 +317,7 @@ if page == "📌 Overview":
 # PAGE: CATEGORY ANALYSIS
 # =====================================================================
 elif page == "🗂️ Category Analysis":
-    st.subheader("Departmental Sales Structure")
+    st.subheader("Major Product Divisions")
     c1, c2 = st.columns([1.3, 1])
 
     with c1:
@@ -322,22 +325,22 @@ elif page == "🗂️ Category Analysis":
                      orientation="h", text=data["category"]["percentage_share"].apply(lambda v: f"{v:.1f}%"),
                      color_discrete_sequence=[PRIMARY_COLOR])
         fig.update_traces(textposition="outside", marker_line_width=0)
-        apply_plotly_theme(fig, title="Gross Sales by Major Category", x_title="Sales ($)", y_title="")
+        apply_plotly_theme(fig, title="Consolidated Sales Volume", x_title="Sales ($)", y_title="")
         st.plotly_chart(fig, use_container_width=True)
 
     with c2:
         fig = px.pie(data["category"], names="category", values="percentage_share",
                      hole=0.45, color_discrete_sequence=PALETTE)
         fig.update_traces(textinfo="percent+label")
-        apply_plotly_theme(fig, title="Category Penetration Matrix")
+        apply_plotly_theme(fig, title="Relative Market Shares")
         st.plotly_chart(fig, use_container_width=True)
 
     st.markdown("---")
-    st.subheader("Granular Sub-Category Breakdown")
+    st.subheader("Sub-Category Breakdown")
 
-    # Interactive Multiselect Filter
+    # Interactive Multiselect Filter (Departmental Level)
     cat_filter = st.multiselect(
-        "Select Departments to Compare",
+        "Choose Category to Explode",
         options=sorted(data["cat_subcat"]["category"].unique()),
         default=sorted(data["cat_subcat"]["category"].unique()),
     )
@@ -348,21 +351,21 @@ elif page == "🗂️ Category Analysis":
                  text=filtered_df["percentage_share"].apply(lambda v: f"{v:.1f}%"),
                  color_discrete_sequence=PALETTE)
     fig.update_traces(textposition="outside", marker_line_width=0)
-    apply_plotly_theme(fig, title="Sub-Category Contribution Analysis", y_title="Sales ($)", x_title="", show_legend=True)
+    apply_plotly_theme(fig, title="Sub-Category Performance Metrics", y_title="Sales ($)", x_title="", show_legend=True)
     st.plotly_chart(fig, use_container_width=True)
 
-    # Clean Data Table Expander with Exporter
-    with st.expander("📋 View and Export Detailed Department Table"):
+    # Data Table Integration with easy exporter
+    with st.expander("📋 Click to View and Download Detailed Sub-Category Data"):
         st.dataframe(
             filtered_df.style.format({"sales": "${:,.2f}", "percentage_share": "{:.2f}%"}),
             use_container_width=True, hide_index=True,
         )
-        get_csv_download_btn(filtered_df, "category_sales.csv")
+        create_download_button(filtered_df, "subcategory_sales_data.csv")
 
     st.markdown(
-        '<div class="insight-box">💡 <b>Executive Actionable Insight:</b> Phones (Technology) and '
-        'Chairs (Furniture) together dominate ~29% of your total product line-up. Ensure stocking priority and '
-        'active vendor margins on these top performers to avoid stock-outs.</div>',
+        '<div class="insight-box">💡 <b>Executive Action Item:</b> Phones and Chairs are key pillars, '
+        'contributing nearly 29% of company-wide sales across all 17 sub-categories. '
+        'Prioritize supply chain agreements and active stock monitoring for these lines to protect gross margins.</div>',
         unsafe_allow_html=True,
     )
 
@@ -371,46 +374,51 @@ elif page == "🗂️ Category Analysis":
 # PAGE: TIME TRENDS
 # =====================================================================
 elif page == "📅 Time Trends":
-    st.subheader("Seasonal & Historical Sales Analysis")
-    tab1, tab2, tab3 = st.tabs(["📊 Year-over-Year Progression", "📈 Quarterly Trends", "📅 Monthly Seasonality"])
+    st.subheader("Chronological Sales Analytics")
+    tab1, tab2, tab3 = st.tabs(["📊 Year-over-Year Progression", "📈 Quarterly Patterns", "📅 Seasonal Fluctuations"])
+
+    # Filtered Datasets based on Sidebar year selector
+    filtered_years_list = selected_years if selected_years else available_years
+    filtered_yearly = data["yearly"][data["yearly"]["year"].isin(filtered_years_list)]
+    filtered_quarterly = data["quarterly"][data["quarterly"]["year"].isin(filtered_years_list)]
 
     with tab1:
         c1, c2 = st.columns([1.5, 1])
         with c1:
-            fig = px.bar(data["yearly"], x="year", y="total_sales",
-                         text=data["yearly"]["total_sales"].apply(lambda v: f"${v:,.0f}"),
+            fig = px.bar(filtered_yearly, x="year", y="total_sales",
+                         text=filtered_yearly["total_sales"].apply(lambda v: f"${v:,.0f}"),
                          color_discrete_sequence=[PRIMARY_COLOR])
             fig.update_traces(textposition="outside", marker_line_width=0)
-            apply_plotly_theme(fig, title="YoY Revenue Curve", y_title="Sales ($)", x_title="")
+            apply_plotly_theme(fig, title="YoY Billing Trajectory", y_title="Sales ($)", x_title="")
             fig.update_xaxes(type="category")
             st.plotly_chart(fig, use_container_width=True)
         with c2:
-            st.markdown("##### Performance Matrix")
-            yoy_table = data["yearly"][["year", "total_sales", "yoy_growth_%"]]
+            st.markdown("##### Year-over-Year Data Matrix")
             st.dataframe(
-                yoy_table.style.format({"total_sales": "${:,.0f}", "yoy_growth_%": "{:+.2f}%"})
+                filtered_yearly[["year", "total_sales", "yoy_growth_%"]]
+                    .style.format({"total_sales": "${:,.0f}", "yoy_growth_%": "{:+.2f}%"})
                     .background_gradient(subset=["yoy_growth_%"], cmap="RdYlGn"),
                 use_container_width=True, hide_index=True,
             )
-            get_csv_download_btn(yoy_table, "yearly_yoy.csv")
+            create_download_button(filtered_yearly, "yearly_performance.csv")
 
     with tab2:
-        fig = px.bar(data["quarterly"], x="quarter", y="total_sales", color="year",
+        fig = px.bar(filtered_quarterly, x="quarter", y="total_sales", color="year",
                      color_discrete_sequence=PALETTE)
         fig.update_traces(marker_line_width=0)
         apply_plotly_theme(fig, title="Quarterly Distribution Breakdown", y_title="Sales ($)", x_title="", show_legend=True)
         st.plotly_chart(fig, use_container_width=True)
-        st.caption("🚨 Note: Q4 in both 2017 & 2018 represents historical peaks due to winter corporate restocking cycles.")
+        st.caption("📊 Note: Q4 in both 2017 & 2018 represents historic fiscal highs due to seasonal end-of-year enterprise contracts.")
 
     with tab3:
         fig = px.bar(data["monthly"], x="month_label", y="total_sales", color_discrete_sequence=[PRIMARY_COLOR])
         fig.update_traces(marker_line_width=0)
-        apply_plotly_theme(fig, title="Aggregate Monthly Demand Profile", y_title="Sales ($)", x_title="")
+        apply_plotly_theme(fig, title="Consolidated Monthly Demand Profile", y_title="Sales ($)", x_title="")
         st.plotly_chart(fig, use_container_width=True)
         st.markdown(
-            '<div class="insight-box">🔥 <b>Seasonality Patterns:</b> November & December represent '
-            'over 30% of total annual volumes. January and February show sharp declines, ideal for inventory counts and '
-            'logistic scheduling adjustments.</div>',
+            '<div class="insight-box">🔥 <b>Seasonal Trends:</b> November and December alone pull '
+            'over 30% of baseline annual billing. We strongly suggest aligning logistics and warehouse staffing limits '
+            'to peak and contract around early October.</div>',
             unsafe_allow_html=True,
         )
 
@@ -419,7 +427,7 @@ elif page == "📅 Time Trends":
 # PAGE: TOP PRODUCTS
 # =====================================================================
 elif page == "🏆 Top Products":
-    st.subheader("Revenue Generation Champions")
+    st.subheader("Gross-Revenue Superstars")
 
     c1, c2 = st.columns([1.4, 1])
     with c1:
@@ -429,7 +437,7 @@ elif page == "🏆 Top Products":
                      color="category", color_discrete_sequence=PALETTE)
                      
         fig.update_traces(textposition="outside", marker_line_width=0)
-        apply_plotly_theme(fig, title="Top 5 Products by Gross Billing", x_title="Sales ($)", y_title="", show_legend=True)
+        apply_plotly_theme(fig, title="Top 5 Individual SKUs (Gross Revenue)", x_title="Sales ($)", y_title="", show_legend=True)
         fig.update_yaxes(tickfont=dict(size=10))
         st.plotly_chart(fig, use_container_width=True)
 
@@ -437,34 +445,34 @@ elif page == "🏆 Top Products":
         fig = px.pie(data["top_products"], names="product_name", values="sales",
                      hole=0.4, color_discrete_sequence=PALETTE)
         fig.update_traces(textinfo="percent", showlegend=False)
-        apply_plotly_theme(fig, title="Relative Market Share (Top 5)")
+        apply_plotly_theme(fig, title="Relative Revenue Spread (Top 5)")
         st.plotly_chart(fig, use_container_width=True)
 
     st.markdown("---")
-    st.markdown("##### Detailed Product Registry")
+    st.markdown("##### Performance Registry")
     st.dataframe(
         data["top_products"].style.format({"sales": "${:,.2f}", "percentage_share": "{:.2f}%"}),
         use_container_width=True, hide_index=True,
     )
-    get_csv_download_btn(data["top_products"], "top_products.csv")
+    create_download_button(data["top_products"], "top_performing_products.csv")
 
 
 # =====================================================================
 # PAGE: WEEKDAY VS WEEKEND
 # =====================================================================
 elif page == "📆 Weekday vs Weekend":
-    st.subheader("Transactional Day-of-Week Comparison")
+    st.subheader("Transactional Velocity Profiles")
 
     wd = data["weekday_weekend"]
     total = wd["total_sales"].sum()
     weekday_val = wd.loc[wd.day_type == "Weekday", "total_sales"].values[0]
     weekend_val = wd.loc[wd.day_type == "Weekend", "total_sales"].values[0]
 
-    # Quick Metrics Row
+    # Quick Metrics Layout
     c1, c2, c3 = st.columns(3)
-    c1.metric("Weekday Billing Total", f"${weekday_val:,.0f}", f"{weekday_val/total*100:.1f}% Share")
-    c2.metric("Weekend Billing Total", f"${weekend_val:,.0f}", f"{weekend_val/total*100:.1f}% Share")
-    c3.metric("B2B Buying Advantage", f"{(weekday_val/weekend_val - 1)*100:.0f}% Higher Velocity")
+    c1.metric("Weekday Gross Sales", f"${weekday_val:,.0f}", f"{weekday_val/total*100:.1f}% Share")
+    c2.metric("Weekend Gross Sales", f"${weekend_val:,.0f}", f"{weekend_val/total*100:.1f}% Share")
+    c3.metric("Weekday Volume Shift", f"{(weekday_val/weekend_val - 1)*100:.0f}% Higher Velocity")
 
     st.markdown("")
     c1, c2 = st.columns(2)
@@ -472,21 +480,21 @@ elif page == "📆 Weekday vs Weekend":
         fig = px.pie(wd, names="day_type", values="total_sales", hole=0.5,
                      color="day_type", color_discrete_map={"Weekday": PRIMARY_COLOR, "Weekend": ACCENT_COLOR})
         fig.update_traces(textinfo="label+percent")
-        apply_plotly_theme(fig, title="Billing Volume Composition")
+        apply_plotly_theme(fig, title="Revenue Composition")
         st.plotly_chart(fig, use_container_width=True)
 
     with c2:
         fig = px.bar(data["day"], x="day_label", y="total_sales", color="type",
                      color_discrete_map={"Weekday": PRIMARY_COLOR, "Weekend": ACCENT_COLOR})
         fig.update_traces(marker_line_width=0)
-        apply_plotly_theme(fig, title="Daily Performance Breakdown", y_title="Sales ($)", x_title="", show_legend=True)
+        apply_plotly_theme(fig, title="Dynamic Daily Performance", y_title="Sales ($)", x_title="", show_legend=True)
         fig.update_xaxes(categoryorder="array", categoryarray=[d.capitalize() for d in data["day_order"]])
         st.plotly_chart(fig, use_container_width=True)
 
     st.markdown(
-        '<div class="insight-box">💡 <b>Strategic Recommendation:</b> Tuesdays and Saturdays are '
-        'individually top-performing days, whilst Thursdays are historically slow. We recommend launching automated email '
-        'remarketing sequences on Thursdays to stimulate midweek demand.</div>',
+        '<div class="insight-box">💡 <b>Executive Recommendation:</b> Tuesdays and Saturdays are '
+        'individually top-performing days, while Thursdays are historically weak. We recommend executing marketing push '
+        'notifications or midweek sales campaigns on Thursdays to level out demand peaks.</div>',
         unsafe_allow_html=True,
     )
 
@@ -496,7 +504,7 @@ elif page == "📆 Weekday vs Weekend":
 # =====================================================================
 st.markdown(
     '<div class="custom-footer">'
-    'Superstore Sales Intelligence Dashboard • Managed Core Engine • Powered by Streamlit & Plotly'
+    'Superstore Sales Intelligence Dashboard • Operational Analytics Core • Built with Streamlit & Plotly'
     '</div>',
     unsafe_allow_html=True,
 )
