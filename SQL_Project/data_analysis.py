@@ -24,7 +24,9 @@ st.markdown(f"""
 <style>
     /* Main Layout Tweaks */
     .block-container {{ padding-top: 1.5rem; padding-bottom: 2rem; max-width: 1350px; }}
-    #MainMenu, footer {{ visibility: hidden; }}
+    
+    /* 3 dots (MainMenu) ko wapas lane ke liye footer ko alag se hide kiya */
+    footer {{ visibility: hidden; }}
 
     /* Metric Cards - Adapts to Streamlit's Theme */
     div[data-testid="stMetric"] {{
