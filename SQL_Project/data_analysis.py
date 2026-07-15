@@ -13,11 +13,10 @@ st.set_page_config(
 )
 
 # =====================================================================
-# THEME / CSS
+# THEME / CSS (Updated to use Streamlit Defaults)
 # =====================================================================
 PRIMARY = "#2E5EAA"
 ACCENT = "#F2994A"
-BG_CARD = "#FFFFFF"
 PALETTE = ["#2E5EAA", "#F2994A", "#1E9E6C", "#9B59B6", "#D64545",
            "#17A2B8", "#6C757D", "#E0A800"]
 
@@ -26,8 +25,9 @@ st.markdown(f"""
     .block-container {{ padding-top: 1.6rem; padding-bottom: 2rem; max-width: 1300px; }}
     #MainMenu, footer {{ visibility: hidden; }}
 
+    /* Default background variable for metrics */
     div[data-testid="stMetric"] {{
-        background: {BG_CARD};
+        background: var(--secondary-background-color);
         border: 1px solid #E9ECEF;
         border-radius: 12px;
         padding: 16px 18px 12px 18px;
@@ -38,15 +38,15 @@ st.markdown(f"""
 
     h2, h3 {{ color: #1B2733; }}
 
+    /* Sidebar background removed to let Streamlit's default color take over */
     section[data-testid="stSidebar"] {{
-        background-color: #F7F9FC;
         border-right: 1px solid #E9ECEF;
     }}
 
     button[data-baseweb="tab"] {{ font-weight: 600; }}
 
     .insight-box {{
-        background: #F0F5FF;
+        background: var(--secondary-background-color);
         border-left: 4px solid {PRIMARY};
         padding: 12px 16px;
         border-radius: 6px;
@@ -59,8 +59,8 @@ st.markdown(f"""
 
 CHART_LAYOUT = dict(
     font=dict(family="Inter, -apple-system, sans-serif", size=13, color="#1B2733"),
-    plot_bgcolor="white",
-    paper_bgcolor="white",
+    plot_bgcolor="rgba(0,0,0,0)",
+    paper_bgcolor="rgba(0,0,0,0)",
     margin=dict(l=10, r=10, t=40, b=10),
     legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
 )
@@ -69,7 +69,7 @@ CHART_LAYOUT = dict(
 def style_fig(fig, title=None, y_title=None, x_title=None, show_legend=False):
     fig.update_layout(**CHART_LAYOUT, title=title, showlegend=show_legend)
     fig.update_yaxes(title=y_title, gridcolor="#EEF1F5", zeroline=False)
-    fig.update_xaxes(title=x_title, gridcolor="white")
+    fig.update_xaxes(title=x_title, gridcolor="rgba(0,0,0,0)")
     return fig
 
 
